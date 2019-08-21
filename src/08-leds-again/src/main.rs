@@ -8,7 +8,21 @@ use aux8::entry;
 fn main() -> ! {
     let (gpioe, rcc) = aux8::init();
 
-    // TODO initialize GPIOE
+    // Enable GPIO Port E
+    // Set bit 21 of RCC_AHBENR
+    rcc.ahbenr.write(|w| w.iopeen().set_bit() );
+
+    // Configure GPIO Port E bit 8 through 15 as digital output
+    gpioe.moder.write(|w| {
+        w.moder8().output();
+        w.moder9().output();
+        w.moder10().output();
+        w.moder11().output();
+        w.moder12().output();
+        w.moder13().output();
+        w.moder14().output();
+        w.moder15().output()
+    });
 
     // Turn on all the LEDs in the compass
     gpioe.odr.write(|w| {
